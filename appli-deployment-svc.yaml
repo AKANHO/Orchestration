@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: etna-projet-dplt
+  labels:
+    app: appli1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appli1
+  template:
+    metadata:
+      labels:
+        app: appli1
+    spec:
+      containers:
+      - name: appli1
+        image: pjctdck/appli:1
+        ports:
+        - containerPort: 4242
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: etna-projet-svc
+spec:
+  selector:
+    app: appli1
+  ports:
+    - protocol: TCP
+      port: 4242
+      targetPort: 4242
+  clusterIP: 10.152.183.225
+  type: LoadBalancer
+status:
+  loadBalancer:
+    ingress:
+    - ip: 10.152.183
